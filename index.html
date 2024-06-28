@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+      var titles = ["V", "Ve", "Ver", "Verm", "Vermi", "Vermil", "Vermill", "Vermilli", "Vermillio", "Vermillion", "Vermillio", "Vermilli", "Vermill", "Vermil", "Vermi", "Verm", "Ver", "Ve", "V", "UwU"];
+      var currentTitleIndex = 0;
+      function changeTitle() {
+          document.title = titles[currentTitleIndex];
+          currentTitleIndex = (currentTitleIndex + 1) % titles.length;
+      }
+      setInterval(changeTitle, 300);
+    </script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Gochi Hand', cursive;
+            background: url('background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            filter: blur(20%);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            position: relative;
+        }
+
+        #snow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .container {
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            position: relative;
+            z-index: 1;
+            display: none;
+        }
+
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 5px solid #ff69b4;
+        }
+
+        h1 {
+            margin-bottom: 1em;
+        }
+
+        .typewriter {
+            overflow: hidden;
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: .15em;
+            animation: typing 5s steps(30, end);
+        }
+
+        @keyframes typing {
+            from {
+                width: 0
+            }
+
+            to {
+                width: 100%
+            }
+        }
+
+        .link {
+            display: inline-block;
+            padding: 1em;
+            margin: 0.5em;
+            background-color: #ff69b4;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0);
+            line-height: 1;
+            vertical-align: middle;
+        }
+
+        .link:hover {
+            background-color: #ff1493;
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.7);
+        }
+
+        .link i {
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .overlay-content {
+            text-align: center;
+        }
+
+        .overlay-message {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+        
+        .overlay-message:hover {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <div id="snow"></div>
+
+    <div class="overlay" id="overlay" onclick="showMainContent()">
+        <div class="overlay-content">
+            <div class="overlay-message">Click to open</div>
+        </div>
+    </div>
+
+    <div class="container" id="mainContent">
+        <img src="profile.jpg" alt="Profile Picture" class="profile-picture">
+        <h1>Vermillion</h1>
+        <div class="typewriter"><h2>Your Average Femboy :3</h2></div>
+        <a href="https://twitter.com/DooringSkids" class="link" target="_blank"><i class="fab fa-twitter"></i> Twitter</a>
+        <a href="https://t.me/DooringSkids" class="link" target="_blank"><i class="fab fa-telegram"></i> Telegram</a>
+        <a href="https://discord.com/users/1191785275655991317" class="link" target="_blank"><i class="fab fa-discord"></i> Discord</a>
+        <a href="https://github.com/vermypoo" class="link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+    </div>
+
+    <audio id="bgMusic" autoplay>
+        <source src="music.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS("snow", {
+                "particles": {
+                    "number": {
+                        "value": 80,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#ffffff"
+                    },
+                    "opacity": {
+                        "value": 0.7,
+                        "random": false,
+                        "anim": {
+                            "enable": false
+                        }
+                    },
+                    "size": {
+                        "value": 3.7,
+                        "random": true,
+                        "anim": {
+                            "enable": false
+                        }
+                    },
+                    "line_linked": {
+                        "enable": false
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 4.3,
+                        "direction": "bottom",
+                        "random": true,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false,
+                        "attract": {
+                            "enable": true,
+                            "rotateX": 300,
+                            "rotateY": 1200
+                        }
+                    },
+                    "interactivity": {
+                        "events": {
+                            "onhover": {
+                                "enable": false
+                            },
+                            "onclick": {
+                                "enable": false
+                            },
+                            "resize": false
+                        }
+                    },
+                    "retina_detect": true
+                }
+            });
+
+            function showMainContent() {
+                var overlay = document.getElementById('overlay');
+                var mainContent = document.getElementById('mainContent');
+                overlay.style.display = 'none';
+                mainContent.style.display = 'block';
+            }
+
+            document.addEventListener('click', function() {
+                var audio = document.getElementById('bgMusic');
+                audio.volume = 0.15;
+                audio.play();
+                showMainContent();
+            });
+        });
+    </script>
+</body>
+</html>
