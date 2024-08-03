@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="main.css">
+    <link href="https://fonts.cdnfonts.com/css/vcr-osd-mono" rel="stylesheet">
+    <title>nemi</title>
+</head>
+
+<body>
+    <div class="overlay" id="overlay">
+        <div class="proceed-button" onclick="removeOverlay()">click >.<</div>
+    </div>
+    <video id="backgroundVideo" loop > <source src="20dollas.mp4" type="video/mp4"></video>
+    <audio id="madaraAudio" src="20dollas.mp3" loop></audio>
+    <div class="glass-box">
+        <h1>nemi</h1>
+        <div class="icons">
+            <div class="icon-container">
+                <i class="fas fa-crown"></i>
+                <span class="icon-text">@owner</span>
+            </div>
+            <div class="icon-container">
+                <i class="fas fa-gun"></i>
+                <span class="icon-text">@gang</span>
+            </div>
+            <div class="icon-container">
+                <i class="fas fa-dollar"></i>
+                <span class="icon-text">@Rich</span>
+            </div>
+            <div class="icon-container">
+                <i class="fas fa-gem"></i>
+                <span class="icon-text">@vip</span>
+            </div>
+        </div>
+        <div id="footer">
+            <span id="typing-text" class="typewriter"></span>
+        </div>
+        <div class="dabox">
+            <a href="https://discord.gg/ivi">
+                <button class="tooltip-button">
+                    <i class="fab fa-discord discord-icon"></i>
+                    <span class="button-tooltip">ivi</span>
+                </button>
+            </a>
+            <a href="https://discord.gg/vicious">
+                <button class="tooltip-button">
+                    <i class="fab fa-discord discord-icon"></i>
+                    <span class="button-tooltip">vicious</span>
+                </button>
+            </a>
+            </a>
+            <a href="https://t.me/dooringlarps">
+                <button class="tooltip-button">
+                    <i class="fab fa-telegram globe-icon" aria-hidden="true"></i>
+                    <span class="button-tooltip">telegram</span>
+                </button>
+            </a>
+        </div>
+    </div>
+    <script>
+        function playBackgroundVideo() {
+            var video = document.getElementById('backgroundVideo');
+            video.play();
+        }
+
+        function playAudio() {
+            var audio = document.getElementById('madaraAudio');
+            audio.volume = 0.4;
+            
+        }
+
+        function removeOverlay() {
+            var overlay = document.getElementById('overlay');
+            overlay.style.display = 'none';
+            playBackgroundVideo();
+            playAudio();
+            typeText();
+        }
+
+        const textElement = document.getElementById("typing-text");
+        const texts = ["meow", "i touch kids", "i touch femboys"];
+        let textIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function typeText() {
+            const currentText = texts[textIndex];
+            if (isDeleting) {
+                textElement.textContent = currentText.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                textElement.textContent = currentText.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            if (!isDeleting && charIndex === currentText.length) {
+                isDeleting = true;
+                setTimeout(typeText, 6000);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                textIndex = (textIndex + 1) % texts.length;
+                setTimeout(typeText, 1000);
+            } else {
+                setTimeout(typeText, 200);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", typeText);
+    </script>
+</body>
+
+</html>
